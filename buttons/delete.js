@@ -1,3 +1,5 @@
+const { MessageEmbed } = require('discord.js');
+
 var message_embed = function(description, colour="#FF0000") {
 	return new MessageEmbed()
 		.setColor(colour)
