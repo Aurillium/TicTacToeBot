@@ -18,7 +18,7 @@ for (const file of button_files) {
 }
 
 var commandsEmbed = new MessageEmbed()
-	.setColor("#0390fc")
+	.setColor("#206694")
 	.setTitle("Command List")
 	.setDescription("Here's a list of commands for " + bot_name + ":\n(Required arguments look like `<this>` and optional ones look like `[this]`)")
 	.setAuthor(bot_author);

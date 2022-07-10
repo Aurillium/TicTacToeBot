@@ -17,7 +17,7 @@ var delete_row = new MessageActionRow()
 
 exports.response = async function(interaction) {
 	var embed = new MessageEmbed()
-		.setColor("#ffff00")
+		.setColor("#206694")
 		.setTitle("Sample Embed!")
 		.setDescription("A little description")
 		.setAuthor(bot_author)
