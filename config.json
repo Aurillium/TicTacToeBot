@@ -1,0 +1,12 @@
+{
+    "bot_name": "YOUR_BOT_NAME",
+    "token": "YOUR_TOKEN_HERE",
+    "client_id": "YOUR_CLIENT_ID",
+    "testing_guild": "TEST_GUILD_ID",
+    "testing_mode": true,
+    "bot_author": {
+        "name": "Aurillium",
+        "iconURL": "https://avatars.githubusercontent.com/u/57483028",
+        "url": "https://github.com/Aurillium"
+    }
+}
