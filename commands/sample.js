@@ -26,4 +26,4 @@ exports.response = async function(interaction) {
 	await interaction.reply({content: "Hello! This is a sample message!", embeds: [embed], components: [delete_row]});
 }
 
-exports.doc = `This appears in the '/commands' display!`
+exports.doc = `This appears in the '/commands' display!`;
