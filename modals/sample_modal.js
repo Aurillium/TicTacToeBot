@@ -19,5 +19,8 @@ exports.modal = new Modal()
     );
 
 exports.response = async function(interaction) {
-    await interaction.reply({ content: 'Your submission was recieved successfully!' });
+    const name = interaction.fields.getTextInputValue('name');
+	const about = interaction.fields.getTextInputValue('about');
+
+    await interaction.reply({ content: 'Your submission was recieved successfully!\n**Name:** ' + name + "\n**About:** " + about });
 }
