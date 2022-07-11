@@ -5,16 +5,22 @@ const { Routes } = require('discord-api-types/v9');
 const { token, client_id, testing_guild, testing_mode, bot_name, bot_author } = require('./config.json');
 const fs = require('node:fs');
 
-const sleep = ms => new Promise(r => setTimeout(r, ms));
+const { message_embed, sleep } = require("./resources.js");
 
 const commands = [];
 const command_responses = {};
 const button_responses = {};
+const modal_responses = {};
+const modal_files = fs.readdirSync('./modals').filter(file => file.endsWith('.js'));
 const button_files = fs.readdirSync('./buttons').filter(file => file.endsWith('.js'));
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+const command_files = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
 for (const file of button_files) {
 	button_responses[file.slice(0, -3)] = require("./buttons/" + file).response;
+}
+for (const file of modal_files) {
+	var mod = require("./modals/" + file);
+	modal_responses[mod.modal.customId] = mod.response;
 }
 
 var commandsEmbed = new MessageEmbed()
@@ -23,7 +29,7 @@ var commandsEmbed = new MessageEmbed()
 	.setDescription("Here's a list of commands for " + bot_name + ":\n(Required arguments look like `<this>` and optional ones look like `[this]`)")
 	.setAuthor(bot_author);
 
-for (const file of commandFiles) {
+for (const file of command_files) {
 	const command = require(`./commands/${file}`);
 	commands.push(command.data.toJSON());
 	command_responses[command.data.name] = command.response;
@@ -104,6 +110,13 @@ client.on('interactionCreate', async interaction => {
 			await button_responses[handler_name](interaction, rest.join(":"));
 		} else {
 			await interaction.reply({embeds: [message_embed(`That button isn't loaded in this version!\nCustom ID: "${interaction.customId}"`, "#FF0000")]})
+		}
+	} else if (interaction.isModalSubmit()) {
+		const [handler_name, ...rest] = interaction.customId.split(":");
+		if (handler_name in modal_responses) {
+			await modal_responses[handler_name](interaction, rest.join(":"));
+		} else {
+			await interaction.reply({embeds: [message_embed(`That modal isn't loaded in this version!\nCustom ID: "${interaction.customId}"`, "#FF0000")]})
 		}
 	}
 });
