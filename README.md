@@ -48,24 +48,24 @@ Select menus go in the `selects` folder. Select menus can have either an overall
 
 ### Module
 * `exports.items`: An object where each key is a possible value for the select menu and each value is another object containing a label, description, and, if there is no overall response function, a response function. For example:
-```javascript
-exports.items = {
-    value_1: {
-        label: "Option one",
-        description: "I am a description!",
-        response = async function(interaction) {
-            ...
-        }
-    },
-    another_value: {
-        label: "Another option!",
-        response = async function(interaction) {
-            ...
-        }
-    }
-}
-```
-The response functions are async functions that take the interaction as an argument. Any hidden data is passed in as a second argument
+  ```javascript
+  exports.items = {
+      value_1: {
+          label: "Option one",
+          description: "I am a description!",
+          response = async function(interaction) {
+              ...
+          }
+      },
+      another_value: {
+          label: "Another option!",
+          response = async function(interaction) {
+              ...
+          }
+      }
+  }
+  ```
+  The response functions are async functions that take the interaction as an argument. Any hidden data is passed in as a second argument
 * `exports.response`: An async function that responds to the interaction if there aren't individual response functions attached to the items. It takes the interaction as the first argument, the list of selected values as the second, and any hidden data as the third
 * `exports.min`: The minimum amount of items allowed to be selected
 * `exports.max`: The maximum amount of items allowed to be selected
