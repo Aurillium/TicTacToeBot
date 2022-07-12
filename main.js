@@ -1,11 +1,11 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { Client, Intents, MessageEmbed } = require('discord.js');
+const { Client, Intents } = require('discord.js');
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
 const { token, client_id, testing_guild, testing_mode, bot_name, bot_author } = require('./config.json');
 const fs = require('node:fs');
 
-const { message_embed, sleep } = require("./resources.js");
+const { message_embed, sleep, author_embed } = require("./resources.js");
 
 const commands = [];
 const functional_select_responses = {};
@@ -47,11 +47,9 @@ for (const file of modal_files) {
 	modal_responses[mod.modal.customId] = mod.response;
 }
 
-var commandsEmbed = new MessageEmbed()
-	.setColor("#206694")
+var commandsEmbed = author_embed()
 	.setTitle("Command List")
-	.setDescription("Here's a list of commands for " + bot_name + ":\n(Required arguments look like `<this>` and optional ones look like `[this]`)")
-	.setAuthor(bot_author);
+	.setDescription("Here's a list of commands for " + bot_name + ":\n(Required arguments look like `<this>` and optional ones look like `[this]`)");
 
 for (const file of command_files) {
 	const command = require(`./commands/${file}`);
