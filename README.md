@@ -40,6 +40,7 @@ You can get an instance of the modal that can be passed to `interaction.showModa
 This is essentially more elegant code for finding the module in the folder, importing it, and getting the modal builder from it.
 
 **Note**
+
 The custom ID from the modal builder is what the bot uses to find the right response function, so if you plan on manually building a modal without using `exports.modal`, make sure to set the custom ID to the same one as is in `exports.modal`.
 
 ## Select Menus
@@ -74,3 +75,11 @@ Select menus go in the `selects` folder. Select menus can have either an overall
 You can get an instance of the select menu that can be used as a message component and added to an action from by importing it like this:
 `const { select_menu_file_file } = require("../selects.js");`
 This imports the select menu file and then builds a menu from `exports.items`, using the file name as the custom ID, and returns it to be used as a variable
+
+## Resources.js
+
+This file contains:
+* `sleep`: an async sleep function,
+* `message_embed`: a function for creating simple messages in an embed,
+* `random_choice`: a function to pick a random value from an array, and
+* `author_embed`: a function to create an embed from the author and colour values in `config.js`
