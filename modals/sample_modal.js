@@ -22,5 +22,5 @@ exports.response = async function(interaction) {
     const name = interaction.fields.getTextInputValue('name');
 	const about = interaction.fields.getTextInputValue('about');
 
-    await interaction.reply({ content: 'Your submission was recieved successfully!\n**Name:** ' + name + "\n**About:** " + about });
+    await interaction.reply('Your submission was recieved successfully!\n**Name:** ' + name + "\n**About:** " + about);
 }
