@@ -8,18 +8,42 @@ const fs = require('node:fs');
 const { message_embed, sleep } = require("./resources.js");
 
 const commands = [];
+const functional_select_responses = {};
+const select_responses = {};
 const command_responses = {};
 const button_responses = {};
 const modal_responses = {};
 const modal_files = fs.readdirSync('./modals').filter(file => file.endsWith('.js'));
 const button_files = fs.readdirSync('./buttons').filter(file => file.endsWith('.js'));
 const command_files = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+const select_files = fs.readdirSync('./selects').filter(file => file.endsWith('.js'));
 
+for (const file of select_files) {
+	const name = file.slice(0, -3);
+	const mod = require("./selects/" + file);
+	if ((mod.response === undefined || mod.response === null) && (mod.min ?? 1 === 1) && (mod.max ?? 1 === 1)) {
+		functional_select_responses[name] = {};
+		for (const [value, item] of Object.entries(mod.items)) {
+			if (item.response === undefined || item.response === null) {
+				throw new Error(name + ": If there is no response function for the overall select, each option must have one. (Missing: '" + value + "')");
+			}
+			functional_select_responses[name][value] = item.response;
+		}
+		
+	} else {
+		for (const [value, item] of Object.entries(mod.items)) {
+			if (item.response !== undefined && item.response !== null) {
+				throw new Error(file + ": For individual item responses to be used on a select, the minimum and maximum options must be 1 and there must be no overall response function.");
+			}
+		}
+		select_responses[name] = mod.response;
+	}
+}
 for (const file of button_files) {
 	button_responses[file.slice(0, -3)] = require("./buttons/" + file).response;
 }
 for (const file of modal_files) {
-	var mod = require("./modals/" + file);
+	const mod = require("./modals/" + file);
 	modal_responses[mod.modal.customId] = mod.response;
 }
 
@@ -115,6 +139,15 @@ client.on('interactionCreate', async interaction => {
 		const [handler_name, ...rest] = interaction.customId.split(":");
 		if (handler_name in modal_responses) {
 			await modal_responses[handler_name](interaction, rest.join(":"));
+		} else {
+			await interaction.reply({embeds: [message_embed(`That modal isn't loaded in this version!\nCustom ID: "${interaction.customId}"`, "#FF0000")]})
+		}
+	} else if (interaction.isSelectMenu()) {
+		const [handler_name, ...rest] = interaction.customId.split(":");
+		if (handler_name in select_responses) {
+			await select_responses[handler_name](interaction, interaction.values, rest.join(":"));
+		} else if (handler_name in functional_select_responses) {
+			await functional_select_responses[handler_name][interaction.values[0]](interaction, rest.join(":"));
 		} else {
 			await interaction.reply({embeds: [message_embed(`That modal isn't loaded in this version!\nCustom ID: "${interaction.customId}"`, "#FF0000")]})
 		}
