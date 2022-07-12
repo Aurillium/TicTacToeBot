@@ -149,7 +149,7 @@ client.on('interactionCreate', async interaction => {
 		} else if (handler_name in functional_select_responses) {
 			await functional_select_responses[handler_name][interaction.values[0]](interaction, rest.join(":"));
 		} else {
-			await interaction.reply({embeds: [message_embed(`That modal isn't loaded in this version!\nCustom ID: "${interaction.customId}"`, "#FF0000")]})
+			await interaction.reply({embeds: [message_embed(`That selection menu isn't loaded in this version!\nCustom ID: "${interaction.customId}"`, "#FF0000")]})
 		}
 	}
 });
