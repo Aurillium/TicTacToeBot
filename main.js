@@ -105,18 +105,17 @@ const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
 // Change this if you want to give the bot a custom status
 async function change_status() {
 	while (true) {
-		client.user.setActivity('YOU', { type: 'LISTENING' });
+		client.user.setActivity('Tic Tac Toe', { type: 'PLAYING' });
 		await sleep(1000 * 60 * 2);
 	}
 }
 
 client.on('ready', () => {
 	console.log(`Logged in as ${client.user.tag}!`);
-	// Uncomment to use custom status:
-	//change_status().catch(e => {
-	//	console.log("Status change failed:");
-	//	console.log(e);
-	//});
+	change_status().catch(e => {
+		console.log("Status change failed:");
+		console.log(e);
+	});
 });
 
 client.on('interactionCreate', async interaction => {
@@ -177,4 +176,5 @@ process.on("SIGINT", () => {
 	});
 });
 
+// https://discord.com/api/oauth2/authorize?client_id=903657209123184680&permissions=2147485696&scope=bot%20applications.commands
 client.login(token);

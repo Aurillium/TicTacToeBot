@@ -1,4 +1,5 @@
 const { MessageEmbed } = require('discord.js');
+const { MessageActionRow, MessageButton } = require('discord.js');
 const config = require('./config.json');
 
 exports.message_embed = function(description, colour="#FF0000") {
@@ -19,4 +20,25 @@ exports.author_embed = function() {
 	} else {
 		return new MessageEmbed().setAuthor(config.bot_author);
 	}
+}
+
+exports.make_panel = function(data, win=[]) {
+	const game = data.replaceAll("_", " ").replaceAll("x", "❌").replaceAll("o", "⭕");
+	var components = [];
+	for (let i = 0; i < 3; i++) {
+		var row = new MessageActionRow();
+		for (let j = 0; j < 3; j++) {
+			const index = i * 3 + j
+			row.addComponents(
+				new MessageButton()
+					.setCustomId("game:" + index.toString())
+					.setStyle(win.includes(index) ? "SUCCESS" : "SECONDARY")
+					.setLabel(game[index])
+					//.setDisabled(game[index] !== " ")
+					.setDisabled(win.length !== 0)
+			);
+		}
+		components.push(row);
+	}
+	return components
 }
